@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -41,16 +42,30 @@ public class BlogController {
 
     @GetMapping("/blogs")
     public String blog(@PageableDefault(size = 4,sort = {"updateTime"},direction = Direction.DESC) Pageable pageable,
-                       BlogQuery blog, Model model){
-        model.addAttribute("page",blogService.listBlog(pageable,blog));
+                       BlogQuery blog, Model model,HttpServletRequest request){
+        // 获取当前用户
+        Object user = request.getSession().getAttribute("user");
+        if(user == null){
+            return null;
+        }
+        User u = (User)user;
+        Long id = u.getId();
+        model.addAttribute("page",blogService.listBlog(pageable,blog,id));
         model.addAttribute("types",typeService.listType());
         return "admin/back_blog";
     }
 
     @PostMapping("/blogs/search")
     public String search(@PageableDefault(size = 4,sort = {"updateTime"},direction = Direction.DESC) Pageable pageable,
-                         BlogQuery blog, Model model){
-        model.addAttribute("page",blogService.listBlog(pageable,blog));
+                         BlogQuery blog, Model model,HttpServletRequest request){
+        // 获取当前用户
+        Object user = request.getSession().getAttribute("user");
+        if(user == null){
+            return null;
+        }
+        User u = (User)user;
+        Long id = u.getId();
+        model.addAttribute("page",blogService.listBlog(pageable,blog,id));
         return "admin/back_blog :: blogList";
     }
 

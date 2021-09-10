@@ -18,7 +18,7 @@ public interface BlogService {
 
     Blog getAndConvert(Long id);
 
-    Page<Blog> listBlog(Pageable pageable, BlogQuery blog);
+    Page<Blog> listBlog(Pageable pageable, BlogQuery blog,Long id);
 
     Page<Blog> listBlog(Pageable pageable);
 

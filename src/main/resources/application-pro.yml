@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8088
 
 spring:
   datasource:
@@ -10,12 +10,15 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
-    show-sql: true
+      ddl-auto: update
+      show-sql: true
+# 日志配置
 logging:
+  config: classpath:logback-prod.xml
   level:
     root: warn
-    com.chen.blog: info
+    com.chen.blog: debug
+    org.springframework: warn
 
-  file:
-    name: log/blog-pro.log
+#  file:
+#    name: log/blog-pro.log

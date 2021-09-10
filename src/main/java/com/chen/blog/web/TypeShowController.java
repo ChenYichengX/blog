@@ -28,7 +28,7 @@ public class TypeShowController {
     @Autowired
     private BlogService blogService;
 
-@GetMapping("b1`zax~!Azxa~! Z!")
+    @GetMapping("/types/{id}")
     public String types(@PageableDefault(size = 4,sort = {"updateTime"},direction = Direction.DESC) Pageable pageable,
                         @PathVariable Long id, Model model){
         List<Type> types = typeService.listTypeTop(100);
@@ -38,7 +38,7 @@ public class TypeShowController {
         BlogQuery blogQuery = new BlogQuery();
         blogQuery.setTypeId(id);
         model.addAttribute("types",types);
-        model.addAttribute("page",blogService.listBlog(pageable,blogQuery));
+        model.addAttribute("page",blogService.listBlog(pageable,blogQuery,null));
         model.addAttribute("activeTypeId",id);
         return "type";
     }
