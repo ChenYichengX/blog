@@ -18,3 +18,7 @@ logging:
     com.chen.blog: debug
   file:
     name: log/blog-dev.log
+
+upload:
+  serverUrl: http://localhost:8088
+  picturePath: file:D:\blog\PicturePath
