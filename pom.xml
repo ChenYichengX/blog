@@ -19,6 +19,12 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.15</version>
+        </dependency>
         <!-- 将 editormd 转为 html -->
         <dependency>
             <groupId>com.atlassian.commonmark</groupId>
