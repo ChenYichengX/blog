@@ -21,7 +21,7 @@ public class LogAspect {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Pointcut("execution(* com.chen.blog.web.*.*(..))")
+    @Pointcut("execution(* com.chen.blog.web.*.*(..)) && !execution(* com.chen.blog.web.IndexController.ioReadPicture(..)) && !execution(* com.chen.blog.web.IndexController.newBlogList(..))")
     public void log(){}
 
     @Before("log()")

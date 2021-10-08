@@ -96,10 +96,14 @@ public class IndexController {
     @GetMapping("/footer/newblog")
     public String newBlogList(Model model) {
         model.addAttribute("newblogs", blogService.listRecommendBlogTop(3));
-        System.out.println("1");
         return "_fragments :: newbloglist";
     }
 
+    /**
+     * @Author ChenYicheng
+     * @Description 读取图片
+     * @Date 2021/10/8 15:42
+     */
     @GetMapping("/picture")
     public void ioReadPicture(@RequestParam(value = "path") String path, HttpServletResponse response) {
 

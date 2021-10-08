@@ -2,13 +2,13 @@ package com.chen.blog.web.admin;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chen.blog.entity.Blog;
+import com.chen.blog.entity.Picture;
 import com.chen.blog.entity.User;
 import com.chen.blog.service.BlogService;
+import com.chen.blog.service.PictureService;
 import com.chen.blog.service.TagService;
 import com.chen.blog.service.TypeService;
 import com.chen.blog.vo.BlogQuery;
-import org.apache.catalina.startup.SafeForkJoinWorkerThreadFactory;
-import org.attoparser.trace.MarkupTraceEvent.AttributeTraceEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.util.Random;
 
 /**
  * @author 陈奕成
@@ -46,6 +45,9 @@ public class BlogController {
 
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    private PictureService pictureService;
 
     /**
      * 图片存放路径-ChenYicheng-2021/9/14 19:09
@@ -158,6 +160,12 @@ public class BlogController {
                 s = System.currentTimeMillis() + "." + substring;
                 realFile = new File(parentPath, s);
                 file.transferTo(realFile); // 将图片存起来
+
+                // 将图片信息存入数据库
+                Picture picture = new Picture();
+                picture.setRealPath(realFile.getAbsolutePath()); // 文件的绝对路径
+                picture.setPictureName(originalFilename); // 原始文件名
+                pictureService.savePicture(picture);
             }
         } catch (Exception e) {
             logger.error("图片上传失败");
