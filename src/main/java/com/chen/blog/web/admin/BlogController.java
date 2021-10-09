@@ -62,7 +62,7 @@ public class BlogController {
     private String serverUrl;
 
     @GetMapping("/blogs")
-    public String blog(@PageableDefault(size = 4, sort = {"updateTime"}, direction = Direction.DESC) Pageable pageable,
+    public String blog(@PageableDefault(size = 6, sort = {"updateTime"}, direction = Direction.DESC) Pageable pageable,
                        BlogQuery blog, Model model, HttpServletRequest request) {
         // 获取当前用户
         Object user = request.getSession().getAttribute("user");
@@ -77,7 +77,7 @@ public class BlogController {
     }
 
     @PostMapping("/blogs/search")
-    public String search(@PageableDefault(size = 4, sort = {"updateTime"}, direction = Direction.DESC) Pageable pageable,
+    public String search(@PageableDefault(size = 6, sort = {"updateTime"}, direction = Direction.DESC) Pageable pageable,
                          BlogQuery blog, Model model, HttpServletRequest request) {
         // 获取当前用户
         Object user = request.getSession().getAttribute("user");
