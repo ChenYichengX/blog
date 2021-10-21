@@ -272,6 +272,7 @@ var _self = (typeof window !== 'undefined')
 								<button id="commentPost-btn" type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>发布</button>
 							</div>
 						</div>
+						<div class="ui error message"></div>
 					</div>
 				</div >
 			</div>
@@ -402,7 +403,7 @@ var _self = (typeof window !== 'undefined')
 						identifier : 'content',
 						rules : [{
 							type : 'empty',
-							prompt: '请输入评论内容'
+							prompt: '请输入评论内容!!!'
 						}]
 					},
 					nickName : {
@@ -417,6 +418,9 @@ var _self = (typeof window !== 'undefined')
 						rules : [{
 							type : 'empty',
 							prompt: '请输入你email'
+						},{
+							type : 'email',
+							prompt: '请填写正确格式'
 						}]
 					}
 				}
