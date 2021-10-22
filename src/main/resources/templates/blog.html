@@ -152,7 +152,10 @@ var _self = (typeof window !== 'undefined')
 											<div class="ui teal basic left pointing label m-padded-tiny" th:if="${comment.adminComment}">博主</div>
 										</a>
 										<div class="metadata">
-											<span class="date" th:text="${#dates.format(comment.createTime,'yyyy-MM-dd hh:mm:ss')}">Today at 5:42PM</span>
+<!--											<span class="date" th:text="${#dates.format(comment.createTime,'yyyy-MM-dd hh:mm:ss')}">Today at 5:42PM</span>-->
+											<span class="date" th:text="${#dates.format(#calendars.createForTimeZone(#calendars.year(comment.createTime),
+											 #calendars.month(comment.createTime), #calendars.day(comment.createTime),
+											  #calendars.hour(comment.createTime), #calendars.minute(comment.createTime), #calendars.second(comment.createTime),'CTT'), 'yyyy-MM-dd HH:mm:ss')}">Today at 5:42PM</span>
 										</div>
 										<div class="text" th:text="${comment.content}">
 											How artistic!
@@ -256,6 +259,35 @@ var _self = (typeof window !== 'undefined')
 							<textarea name="content" placeholder="请输入评论内容..."></textarea>
 						</div>
 						<div class="fields">
+							<!--<div class="field m-mobile-wide m-margin-buttom-mini">
+								<select class="ui dropdown">
+									<option value="">头像</option>
+									<option value="1" style="display: block">
+										<img class="ui mini avatar image" src="../static/images/001.jpg">1
+									</option>
+									<option value="2">
+										<img class="ui mini avatar image" src="../static/images/002.jpg">2
+									</option>
+									<option value="3">
+										<img class="ui mini avatar image" src="../static/images/003.jpg">3
+									</option>
+									<option value="4">
+										<img class="ui mini avatar image" src="../static/images/004.jpg">4
+									</option>
+									<option value="5">
+										<img class="ui mini avatar image" src="../static/images/005.jpg">5
+									</option>
+									<option value="6">
+										<img class="ui mini avatar image" src="../static/images/006.jpg">6
+									</option>
+									<option value="7">
+										<img class="ui mini avatar image" src="../static/images/007.jpg">7
+									</option>
+									<option value="8">
+										<img class="ui mini avatar image" src="../static/images/008.jpg">8
+									</option>
+								</select>
+							</div>-->
 							<div class="field m-mobile-wide m-margin-buttom-mini">
 								<div class="ui left icon input">
 									<i class="user icon"></i>
