@@ -1,5 +1,6 @@
 package com.chen.blog.web;
 
+import com.chen.blog.aspect.SystemLog;
 import com.chen.blog.service.BlogService;
 import com.chen.blog.service.TagService;
 import com.chen.blog.service.TypeService;
@@ -62,6 +63,7 @@ public class IndexController {
         imageContentType.put("gif","image/gif");
     }
 
+    @SystemLog(serviceName = "blog服务", module = "首页模块", action = "访问首页")
     @GetMapping("/")
     public String index(@PageableDefault(size = 4, sort = {"updateTime"}, direction = Direction.DESC) Pageable pageable,
                         Model model) {
@@ -72,6 +74,7 @@ public class IndexController {
         return "index";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "首页模块", action = "通过blogId获取该博客信息")
     @GetMapping("/blog/{id}")
     public String blog(@PathVariable Long id, Model model) {
 
@@ -80,6 +83,7 @@ public class IndexController {
         return "blog";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "首页模块", action = "搜索博客")
     @PostMapping("/search")
     public String search(@PageableDefault(size = 4, sort = {"updateTime"}, direction = Direction.DESC) Pageable pageable,
                          @RequestParam String query, Model model) {
@@ -88,6 +92,7 @@ public class IndexController {
         return "search";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "首页模块", action = "访问'关于我'页")
     @GetMapping("/about")
     public String about() {
         return "about";

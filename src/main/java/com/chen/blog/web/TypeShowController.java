@@ -1,5 +1,6 @@
 package com.chen.blog.web;
 
+import com.chen.blog.aspect.SystemLog;
 import com.chen.blog.entity.Type;
 import com.chen.blog.service.BlogService;
 import com.chen.blog.service.TypeService;
@@ -28,6 +29,7 @@ public class TypeShowController {
     @Autowired
     private BlogService blogService;
 
+    @SystemLog(serviceName = "blog服务", module = "分类模块", action = "查看分类页、或查看某个分类的相关博客")
     @GetMapping("/types/{id}")
     public String types(@PageableDefault(size = 4,sort = {"updateTime"},direction = Direction.DESC) Pageable pageable,
                         @PathVariable Long id, Model model){

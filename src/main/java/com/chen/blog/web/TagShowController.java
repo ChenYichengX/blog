@@ -1,5 +1,6 @@
 package com.chen.blog.web;
 
+import com.chen.blog.aspect.SystemLog;
 import com.chen.blog.entity.Tag;
 import com.chen.blog.service.BlogService;
 import com.chen.blog.service.TagService;
@@ -28,6 +29,7 @@ public class TagShowController {
     @Autowired
     private BlogService blogService;
 
+    @SystemLog(serviceName = "blog服务", module = "标签模块", action = "查看标签页、或查看某个标签的相关博客")
     @GetMapping("/tags/{id}")
     public String tags(@PageableDefault(size = 4,sort = {"updateTime"},direction = Direction.DESC) Pageable pageable,
                         @PathVariable Long id, Model model){

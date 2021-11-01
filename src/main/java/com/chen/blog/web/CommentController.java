@@ -1,5 +1,6 @@
 package com.chen.blog.web;
 
+import com.chen.blog.aspect.SystemLog;
 import com.chen.blog.entity.Comment;
 import com.chen.blog.entity.User;
 import com.chen.blog.service.BlogService;
@@ -30,12 +31,14 @@ public class CommentController {
     @Value("${comment.avatar}")
     private String avatar;
 
+    @SystemLog(serviceName = "blog服务", module = "评论模块", action = "通过blogId获取该博客的评论")
     @GetMapping("/comments/{blogId}")
     public String comments(@PathVariable Long blogId, Model model){
         model.addAttribute("comments",commentService.listCommentByBlogId(blogId));
         return "blog :: commentList";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "评论模块", action = "新增评论")
     @PostMapping("/comments")
     public String submitPost(Comment comment, HttpSession session){
         comment.setBlog(blogService.getBlog(comment.getBlog().getId()));
