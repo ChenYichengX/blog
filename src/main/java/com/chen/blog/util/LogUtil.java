@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.client.reactive.ReactiveElasticsearchClient;
-import org.springframework.data.elasticsearch.core.ReactiveElasticsearchTemplate;
+//import org.springframework.data.elasticsearch.client.reactive.ReactiveElasticsearchClient;
+//import org.springframework.data.elasticsearch.core.ReactiveElasticsearchTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -49,9 +49,6 @@ public class LogUtil {
 //    public void init() {
 //        this.reactiveElasticsearchTemplate = new ReactiveElasticsearchTemplate(this.reactiveElasticsearchClient);
 //    }
-
-    @Autowired
-    private RestHighLevelClient restHighLevelClient;
 
     @Async
     public void insertEsLog(String serviceName, String module, String action, Object proceed, String[] parameterNames, Object[] args, HttpServletRequest request) {
@@ -105,7 +102,7 @@ public class LogUtil {
             String json = mapper.writeValueAsString(esLog);
             IndexRequest request1 = new IndexRequest("blog_logs");
             request1.source(json, XContentType.JSON);
-            restHighLevelClient.index(request1, RequestOptions.DEFAULT);
+//            restHighLevelClient.index(request1, RequestOptions.DEFAULT);
 
             System.out.println(esLog);
 

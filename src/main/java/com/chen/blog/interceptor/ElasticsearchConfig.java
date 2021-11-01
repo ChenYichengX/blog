@@ -1,17 +1,35 @@
-package com.chen.blog.util;
+package com.chen.blog.interceptor;
+
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
 
 
 /**
- * @ClassName EsUtil
+ * @ClassName ElasticsearchConfig
  * @Author ChenYicheng
- * @Description elasticsearch工具类：@Component默认是单例
- * @Date 2021/10/29 11:37
+ * @Description es 配置
+ * @Date 2021/11/1 15:11
  */
-//@Component
-public class EsUtil {
+@Configuration
+public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
 
-//    @Value("elasticsearch.ipAddr")
-//    private String ipAddr;
+//    @Value("elasticsearch.host")
+//    private String host;
+//
+//    @Value("elasticsearch.port")
+//    private String port;
 //
 //    @Value("elasticsearch.username")
 //    private String username;
@@ -19,18 +37,16 @@ public class EsUtil {
 //    @Value("elasticsearch.password")
 //    private String password;
 
-//    @Autowired
-//    private RestHighLevelClient RestHighLevelClient;
+    @Override
+    public RestHighLevelClient elasticsearchClient() {
 
-
-    /*public RestHighLevelClient getClient(){
 
         // 创建 HttpHost 对象
-        HttpHost host = new HttpHost(ipAddr,9200);
+        HttpHost host = new HttpHost("121.36.1.142",9200);
 
 
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
+        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("elastic", "Chen516127.0"));
 
         // 创建 RestClientBuilder
         RestClientBuilder builder = RestClient.builder(host).setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
@@ -54,6 +70,6 @@ public class EsUtil {
 
         // 返回
         return client;
-    }*/
+    }
 
 }

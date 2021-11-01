@@ -2,6 +2,12 @@ package com.chen.blog;
 
 import com.chen.blog.util.EsUtil;
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
@@ -20,7 +26,7 @@ import org.junit.jupiter.api.Test;
  */
 public class TestESLog {
 
-    String index = "person";
+    String index = "blog_logs";
 
     String type = "man";
 
@@ -31,8 +37,26 @@ public class TestESLog {
         // 创建 HttpHost 对象
         HttpHost host = new HttpHost("121.36.1.142",9200);
 
+
+        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("elastic", "Chen516127.0"));
+
         // 创建 RestClientBuilder
-        RestClientBuilder builder = RestClient.builder(host);
+        RestClientBuilder builder = RestClient.builder(host).setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
+            @Override
+            public RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder requestConfigBuilder) {
+                requestConfigBuilder.setConnectTimeout(-1);
+                requestConfigBuilder.setSocketTimeout(-1);
+                requestConfigBuilder.setConnectionRequestTimeout(-1);
+                return requestConfigBuilder;
+            }
+        }).setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
+            @Override
+            public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
+                httpClientBuilder.disableAuthCaching();
+                return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+            }
+        });
 
         // 创建 RestHighLevelClient
         RestHighLevelClient client = new RestHighLevelClient(builder);
@@ -58,18 +82,15 @@ public class TestESLog {
         XContentBuilder mappings = JsonXContent.contentBuilder()
                 .startObject()
                 .startObject("properties")
-                .startObject("createDate").field("type", "date").endObject()
-                .startObject("sendDate").field("type", "date").endObject()
-                .startObject("longCode").field("type", "keyword").endObject()
-                .startObject("mobile").field("type", "keyword").endObject()
-                .startObject("corpName").field("type", "keyword").endObject()
-                .startObject("smsContent").field("type", "text").field("analyzer", "ik_max_word").endObject()
-                .startObject("state").field("type", "integer").endObject()
-                .startObject("operatorId").field("type", "integer").endObject()
-                .startObject("province").field("type", "keyword").endObject()
-                .startObject("ipAddr").field("type", "ip").endObject()
-                .startObject("replyTotal").field("type", "integer").endObject()
-                .startObject("fee").field("type", "long").endObject()
+                .startObject("serverName").field("type", "keyword").endObject()
+                .startObject("module").field("type", "keyword").endObject()
+                .startObject("action").field("type", "keyword").endObject()
+                .startObject("userName").field("type", "text").endObject()
+                .startObject("createTime").field("type", "date").endObject()
+                .startObject("data").field("type", "text").field("analyzer", "ik_max_word").endObject()
+                .startObject("resultCode").field("type", "text").endObject()
+                .startObject("ip").field("type", "ip").endObject()
+                .startObject("browswer").field("type", "keyword").endObject()
                 .endObject()
                 .endObject();
 

@@ -13,7 +13,7 @@ import java.util.Date;
  * @Description EsLog
  * @Date 2021/10/29 9:51
  */
-@Document(indexName = "blog_logs")
+@Document(indexName = "blog_logs",shards = 3,replicas = 1)
 public class ESLog {
 
     /** id-ChenYicheng-2021/10/29 11:46 */
@@ -21,19 +21,19 @@ public class ESLog {
     private String id;
 
     /** 服务名-ChenYicheng-2021/10/29 11:46 */
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String serverName;
 
     /** 模块名-ChenYicheng-2021/10/29 11:58 */
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String module;
     
     /** 操作-ChenYicheng-2021/10/29 11:58 */
-    @Field
+    @Field(type = FieldType.Keyword)
     private String action;
     
     /** 用户名-ChenYicheng-2021/10/29 11:58 */
-    @Field
+    @Field(type = FieldType.Text,analyzer = "ik_max_word")
     private String userName;
     
     /** ip-ChenYicheng-2021/10/29 11:58 */
@@ -41,11 +41,11 @@ public class ESLog {
     private String ip;
     
     /** 客户端浏览器-ChenYicheng-2021/10/29 11:58 */
-    @Field
+    @Field(type = FieldType.Keyword)
     private String browswer;
 
     /** 参数-ChenYicheng-2021/10/29 11:59 */
-    @Field
+    @Field(type = FieldType.Text,analyzer = "ik_max_word")
     private String data;
 
     /** 日志生成时间-ChenYicheng-2021/10/29 12:00 */
@@ -53,6 +53,7 @@ public class ESLog {
     private Date createTime;
 
     /** 请求状态码-ChenYicheng-2021/10/29 12:00 */
+    @Field
     private String resultCode;
 
     public ESLog() {
