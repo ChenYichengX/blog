@@ -11,7 +11,6 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
 
@@ -25,28 +24,28 @@ import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfig
 @Configuration
 public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
 
-//    @Value("elasticsearch.host")
-//    private String host;
-//
-//    @Value("elasticsearch.port")
-//    private String port;
-//
-//    @Value("elasticsearch.username")
-//    private String username;
-//
-//    @Value("elasticsearch.password")
-//    private String password;
+    @Value("${elasticsearch.host}")
+    private String ip;
+
+    @Value("${elasticsearch.port}")
+    private Integer port;
+
+    @Value("${elasticsearch.username}")
+    private String username;
+
+    @Value("${elasticsearch.password}")
+    private String password;
 
     @Override
     public RestHighLevelClient elasticsearchClient() {
 
 
         // 创建 HttpHost 对象
-        HttpHost host = new HttpHost("121.36.1.142",9200);
+        HttpHost host = new HttpHost(ip,port);
 
 
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("elastic", "Chen516127.0"));
+        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
 
         // 创建 RestClientBuilder
         RestClientBuilder builder = RestClient.builder(host).setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {

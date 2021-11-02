@@ -2,29 +2,20 @@ package com.chen.blog.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chen.blog.aspect.entity.ESLog;
+import com.chen.blog.dao.ESLogRepository;
 import com.chen.blog.entity.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-//import org.springframework.data.elasticsearch.client.reactive.ReactiveElasticsearchClient;
-//import org.springframework.data.elasticsearch.core.ReactiveElasticsearchTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.annotation.PostConstruct;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.util.Date;
 import java.util.UUID;
@@ -40,15 +31,8 @@ public class LogUtil {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-//    @Autowired
-//    private ReactiveElasticsearchClient reactiveElasticsearchClient;
-//
-//    private ReactiveElasticsearchTemplate reactiveElasticsearchTemplate;
-//
-//    @PostConstruct
-//    public void init() {
-//        this.reactiveElasticsearchTemplate = new ReactiveElasticsearchTemplate(this.reactiveElasticsearchClient);
-//    }
+    @Autowired
+    private ESLogRepository esLogRepository;
 
     @Async
     public void insertEsLog(String serviceName, String module, String action, Object proceed, String[] parameterNames, Object[] args, HttpServletRequest request) {
@@ -97,14 +81,7 @@ public class LogUtil {
             esLog.setResultCode(""/*resultCode*/);
 
             // 调用 esUtil 插入进 elasticsearch
-//            reactiveElasticsearchTemplate.save(esLog);
-            ObjectMapper mapper = new ObjectMapper();
-            String json = mapper.writeValueAsString(esLog);
-            IndexRequest request1 = new IndexRequest("blog_logs");
-            request1.source(json, XContentType.JSON);
-//            restHighLevelClient.index(request1, RequestOptions.DEFAULT);
-
-            System.out.println(esLog);
+            esLogRepository.save(esLog);
 
 
             log.info("日志记录完成:" + esLog);
