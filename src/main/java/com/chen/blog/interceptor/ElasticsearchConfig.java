@@ -38,11 +38,8 @@ public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
 
     @Override
     public RestHighLevelClient elasticsearchClient() {
-
-
         // 创建 HttpHost 对象
         HttpHost host = new HttpHost(ip,port);
-
 
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
@@ -63,10 +60,8 @@ public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
                 return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
             }
         });
-
         // 创建 RestHighLevelClient
         RestHighLevelClient client = new RestHighLevelClient(builder);
-
         // 返回
         return client;
     }

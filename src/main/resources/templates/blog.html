@@ -34,7 +34,7 @@
 				<i class="sidebar icon"></i>
 			</a>
 		</nav>
-		
+
 		<!-- 中间内容 -->
 		<div id="waypoint" class="m-padded-tb-huge m-container animated fadeInLeft">
 			<div class="ui container">
@@ -53,12 +53,12 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<!-- 图片区域 -->
 				<div class="ui attached segment">
 					<img src="https://picsum.photos/id/1/800/450?image=1" th:src="@{${blog.firstPicture}}" alt="" class="ui fluid rounded image">
 				</div>
-				
+
 				<div class="ui attached segment typo typo-selection">
 					<!-- 内容 -->
 					<div class="ui right aligned basic segment">
@@ -122,19 +122,24 @@ var _self = (typeof window !== 'undefined')
 						<div class="eleven wide column">
 							<ui class="list">
 								<li>作者：<span th:text="${blog.user.nickName}">小伟</span><a href="#" target="_blank" th:href="@{/about}">（联系作者）</a></li>
-								<li>发表时间：<span th:text="${#dates.format(blog.createTime,'yyyy-MM-dd hh:mm')}">2020-05-05 09:08</span></li>
+								<li>发表时间：
+<!--									<span th:text="${#dates.format(blog.createTime,'yyyy-MM-dd hh:mm')}">2020-05-05 09:08</span>-->
+									<span class="date" th:text="${#dates.format(#calendars.createForTimeZone(#calendars.year(blog.createTime),
+											 #calendars.month(blog.createTime), #calendars.day(blog.createTime),
+											  #calendars.hour(blog.createTime), #calendars.minute(blog.createTime), #calendars.second(blog.createTime),'CTT'), 'yyyy-MM-dd HH:mm:ss')}">2020-05-05 09:08</span>
+								</li>
 								<li>版权声明：自由转载-非商用-非衍生-保持署名（创意共享3.0许可证）</li>
 								<li>公众号转载：请在文末添加作者公众号二维码</li>
 							</ui>
 						</div>
-						
+
 						<!-- 右边 -->
 						<div class="five wide column">
 							<img src="./static/images/20200505is-me.jpg" th:src="@{/static/images/20200505is-me.jpg}" alt="" class="ui right floated rounded image" style="width: 120px;">
 						</div>
 					</div>
 				</div>
-				
+
 				<!-- 留言区域 -->
 				<div class="ui bottom attached segment" th:if="${blog.commentabled}">
 					<!-- 留言列表区域 -->
@@ -249,7 +254,7 @@ var _self = (typeof window !== 'undefined')
 						</div>
 
 					</div>
-					
+
 					<!-- 留言表单区域 -->
 					<div id="comment-form" class="ui form">
 						<input type="hidden" name="blog.id" th:value="${blog.id}">
@@ -306,7 +311,7 @@ var _self = (typeof window !== 'undefined')
 						</div>
 						<div class="ui error message"></div>
 					</div>
-				</div >
+				</div>
 			</div>
 		</div>
 		<div id="toolbar" class="m-right-bottom m-fixed m-padded animated bounce" style="display: none;">
@@ -317,11 +322,11 @@ var _self = (typeof window !== 'undefined')
 				<div id="toTop-btn" class="ui icon button"><i class="chevron up icon"></i></div>
 			</div>
 		</div>
-		
+
 		<div class="ui toc-tontainer flowing popup transition hidden" style="width: 250px !important;">
 			<ol class="js-toc"></ol>
 		</div>
-		
+
 		<div id="qrcode" class="ui weixinQR flowing popup transition hidden" style="width: 130px !important;">
 			<!-- <img src="./static/images/20200505is-me.jpg" alt="" class="ui rounded image" style="width: 120px;"/> -->
 		</div>
@@ -375,13 +380,13 @@ var _self = (typeof window !== 'undefined')
 			$('.menu.toggle').click(function(){
 				$('.m-item').toggleClass('m-mobile-hide');
 			});
-			
+
 			$('#payButton').popup({
 				popup : $('.payQR.popup'),
 				on : 'click',
 				position: 'bottom center'
 			});
-			
+
 			tocbot.init({
 			  // Where to render the table of contents.
 			  tocSelector: '.js-toc',
@@ -392,12 +397,12 @@ var _self = (typeof window !== 'undefined')
 			  // For headings inside relative or absolute positioned containers within content.
 			  hasInnerContainers: true,
 			});
-			
+
 			$('.wechat').popup({
 				popup : $('.weixinQR'),
 				position: 'left center'
 			});
-			
+
 			$('.toc.button').popup({
 				popup : $('.toc-tontainer.popup'),
 				on : 'click',
@@ -413,11 +418,11 @@ var _self = (typeof window !== 'undefined')
 			    colorLight : "#ffffff",
 			    correctLevel : QRCode.CorrectLevel.H
 			});
-			
+
 			$('#toTop-btn').click(function(){
 				$(window).scrollTo(0,1000);
 			});
-			
+
 			var waypoint = new Waypoint({
 			  element: document.getElementById('waypoint'),
 			  handler: function(direction) {
@@ -471,7 +476,7 @@ var _self = (typeof window !== 'undefined')
 					console.log("校验失败");
 				}
 			});
-			
+
 			function postDate() {
 				$("#comment-container").load(/*[[@{/comments}]]*/"",{
 					"parentComment.id" : $("[name='parentComment.id']").val(),
@@ -485,13 +490,13 @@ var _self = (typeof window !== 'undefined')
 					clearContent();
 				});
 			}
-			
+
 			function clearContent() {
 				$("[name='content']").val('');
 				$("[name='parentComment.id']").val(-1);
 				$("[name='content']").attr("placeholder","请输入评论信息...");
 			}
-			
+
 			function reply(obj) {
 				var commentId = $(obj).data('commentid');
 				var commentNickName = $(obj).data('commentnickname');

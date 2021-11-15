@@ -1,5 +1,6 @@
 package com.chen.blog.web.admin;
 
+import com.chen.blog.aspect.SystemLog;
 import com.chen.blog.entity.Tag;
 import com.chen.blog.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
+    @SystemLog(serviceName = "blog服务", module = "后台标签管理", action = "标签列表分页接口")
     @GetMapping("/tags")
     public String tags(@PageableDefault(size = 8,sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
                        Model model){
@@ -47,6 +49,7 @@ public class TagController {
         return "admin/tag-input";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "后台标签管理", action = "新增标签")
     @PostMapping("/tags")
     public String addTag(@Valid Tag tag, BindingResult result, RedirectAttributes attributes){
         //若标签名重复，给 name 添加了一个错误
@@ -69,6 +72,7 @@ public class TagController {
         return "redirect:/admin/tags";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "后台标签管理", action = "修改标签")
     @PostMapping("/tags/{id}")
     public String editTag(@Valid Tag tag, BindingResult result,
                            @PathVariable(name = "id") Long id,RedirectAttributes attributes){
@@ -92,6 +96,7 @@ public class TagController {
         return "redirect:/admin/tags";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "后台标签管理", action = "删除标签")
     @GetMapping("/tags/{id}/delete")
     public String deleteTag(@PathVariable("id") Long id,RedirectAttributes attributes){
         tagService.deleteTag(id);

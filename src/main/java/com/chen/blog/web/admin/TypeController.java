@@ -1,5 +1,6 @@
 package com.chen.blog.web.admin;
 
+import com.chen.blog.aspect.SystemLog;
 import com.chen.blog.entity.Type;
 import com.chen.blog.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class TypeController {
     @Autowired
     private TypeService typeService;
 
+    @SystemLog(serviceName = "blog服务", module = "后台分类管理", action = "分类列表获取")
     @GetMapping("/types")
     public String types(@PageableDefault(size = 8,sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
                         Model model){
@@ -47,6 +49,7 @@ public class TypeController {
         return "admin/type-input";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "后台分类管理", action = "新增分类")
     @PostMapping("/types")
     public String addType(@Valid Type type, BindingResult result, RedirectAttributes attributes){
         //若分类名重复，给 name 添加了一个错误
@@ -69,6 +72,7 @@ public class TypeController {
         return "redirect:/admin/types";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "后台分类管理", action = "修改分类")
     @PostMapping("/types/{id}")
     public String editType(@Valid Type type, BindingResult result,
                            @PathVariable(name = "id") Long id,RedirectAttributes attributes){
@@ -92,6 +96,7 @@ public class TypeController {
         return "redirect:/admin/types";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "后台分类管理", action = "删除分类")
     @GetMapping("/types/{id}/delete")
     public String deleteType(@PathVariable("id") Long id,RedirectAttributes attributes){
         typeService.deleteType(id);

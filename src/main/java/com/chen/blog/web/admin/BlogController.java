@@ -1,6 +1,7 @@
 package com.chen.blog.web.admin;
 
 import com.alibaba.fastjson.JSONObject;
+import com.chen.blog.aspect.SystemLog;
 import com.chen.blog.entity.Blog;
 import com.chen.blog.entity.Picture;
 import com.chen.blog.entity.User;
@@ -61,6 +62,7 @@ public class BlogController {
     @Value("${upload.serverUrl}")
     private String serverUrl;
 
+    @SystemLog(serviceName = "blog服务", module = "后台管理", action = "获取博客列表")
     @GetMapping("/blogs")
     public String blog(@PageableDefault(size = 6, sort = {"updateTime"}, direction = Direction.DESC) Pageable pageable,
                        BlogQuery blog, Model model, HttpServletRequest request) {
@@ -76,6 +78,7 @@ public class BlogController {
         return "admin/back_blog";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "后台管理", action = "搜索获取博客列表")
     @PostMapping("/blogs/search")
     public String search(@PageableDefault(size = 6, sort = {"updateTime"}, direction = Direction.DESC) Pageable pageable,
                          BlogQuery blog, Model model, HttpServletRequest request) {
@@ -108,6 +111,7 @@ public class BlogController {
         return "admin/blog-input";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "后台管理", action = "新增或修改博客")
     @PostMapping("/blogs")
     public String saveBlog(Blog blog, RedirectAttributes attributes, HttpSession session) {
         blog.setUser((User) session.getAttribute("user"));
@@ -127,6 +131,7 @@ public class BlogController {
         return "redirect:/admin/blogs";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "后台管理", action = "删除博客")
     @GetMapping("/blogs/{id}/delete")
     public String delete(@PathVariable("id") Long id, RedirectAttributes attributes) {
         blogService.deleteBlog(id);

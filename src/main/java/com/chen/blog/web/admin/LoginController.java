@@ -1,5 +1,6 @@
 package com.chen.blog.web.admin;
 
+import com.chen.blog.aspect.SystemLog;
 import com.chen.blog.entity.User;
 import com.chen.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class LoginController {
         return "admin/login";
     }
 
+    @SystemLog(serviceName = "blog服务", module = "后台管理", action = "登录接口")
     @PostMapping("/login")
     public String login(@RequestParam(name = "userName") String userName,
                         @RequestParam(name = "passWord") String passWord,
@@ -45,6 +47,7 @@ public class LoginController {
         }
     }
 
+    @SystemLog(serviceName = "blog服务", module = "后台管理", action = "退出登录")
     @GetMapping("/logout")
     public String logout(HttpSession session){
         session.removeAttribute("user");
