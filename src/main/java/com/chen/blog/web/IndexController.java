@@ -65,7 +65,7 @@ public class IndexController {
 
     @SystemLog(serviceName = "blog服务", module = "首页模块", action = "访问首页")
     @GetMapping("/")
-    public String index(@PageableDefault(size = 4, sort = {"updateTime"}, direction = Direction.DESC) Pageable pageable,
+    public String index(@PageableDefault(size = 4, sort = {"views"}, direction = Direction.DESC) Pageable pageable,
                         Model model) {
         model.addAttribute("page", blogService.listBlog(pageable));
         model.addAttribute("types", typeService.listTypeTop(4));

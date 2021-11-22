@@ -31,7 +31,7 @@ public class TagController {
 
     @SystemLog(serviceName = "blog服务", module = "后台标签管理", action = "标签列表分页接口")
     @GetMapping("/tags")
-    public String tags(@PageableDefault(size = 8,sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
+    public String tags(@PageableDefault(size = 10,sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
                        Model model){
         model.addAttribute("page",tagService.listTag(pageable));
         return "admin/back_tag";

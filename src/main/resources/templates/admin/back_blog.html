@@ -102,11 +102,18 @@
 						<tbody>
 						<tr th:each="blog,iterStat : ${page.content}">
 							<td th:text="${iterStat.count}">1</td>
-							<td th:text="${blog.title}">练习web前端</td>
+<!--							<td th:text="${blog.title}">练习web前端</td>-->
+							<td th:text="${#strings.abbreviate(blog.title,42)}">练习web前端</td>
 							<td th:text="${blog.type.name}">编程</td>
 							<td th:text="${blog.recommend} ? '是' : '否'">是</td>
 							<td th:text="${blog.published} ? '发布' : '草稿'">是</td>
-							<td th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd hh:mm:ss')}">2020-05-06 22:49</td>
+							<td>
+<!--							<td th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd hh:mm:ss')}">-->
+<!--								2020-05-06 22:49-->
+								<span class="date" th:text="${#dates.format(#calendars.createForTimeZone(#calendars.year(blog.updateTime),
+											 #calendars.month(blog.updateTime), #calendars.day(blog.updateTime),
+											  #calendars.hour(blog.updateTime), #calendars.minute(blog.updateTime), #calendars.second(blog.updateTime),'CTT'), 'yyyy-MM-dd HH:mm:ss')}">2020-05-05 09:08</span>
+							</td>
 							<td>
 								<a href="#" th:href="@{/admin/blogs/{id}/input(id=${blog.id})}" class="ui mini teal basic button">编辑</a>
 								<a href="#" th:href="@{/admin/blogs/{id}/delete(id=${blog.id})}" class="ui mini red basic button">删除</a>

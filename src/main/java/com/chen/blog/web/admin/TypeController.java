@@ -31,7 +31,7 @@ public class TypeController {
 
     @SystemLog(serviceName = "blog服务", module = "后台分类管理", action = "分类列表获取")
     @GetMapping("/types")
-    public String types(@PageableDefault(size = 8,sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
+    public String types(@PageableDefault(size = 10,sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
                         Model model){
         model.addAttribute("page",typeService.listType(pageable));
         return "admin/back_type";
