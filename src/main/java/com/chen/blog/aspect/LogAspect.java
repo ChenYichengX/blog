@@ -56,8 +56,7 @@ public class LogAspect {
         String[] parameterNames = signature.getParameterNames();
         Object[] args = joinPoint.getArgs();
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-
-        logUtil.insertEsLog(ocsLog.serviceName(), ocsLog.module(), ocsLog.action(), proceed, parameterNames, args, request);
+        logUtil.insertEsLog(ocsLog.serviceName(), ocsLog.module(), ocsLog.action(), proceed, parameterNames, args,request, request.getSession());
 
         return proceed;
     }

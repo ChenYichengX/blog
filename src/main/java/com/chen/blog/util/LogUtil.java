@@ -3,7 +3,7 @@ package com.chen.blog.util;
 import com.alibaba.fastjson.JSONObject;
 import com.chen.blog.aspect.entity.ESLog;
 import com.chen.blog.dao.ESLogRepository;
-import com.chen.blog.entity.User;
+import com.chen.blog.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +13,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.net.InetAddress;
 import java.util.Date;
 import java.util.UUID;
@@ -35,7 +38,7 @@ public class LogUtil {
     private ESLogRepository esLogRepository;
 
     @Async
-    public void insertEsLog(String serviceName, String module, String action, Object proceed, String[] parameterNames, Object[] args, HttpServletRequest request) {
+    public void insertEsLog(String serviceName, String module, String action, Object proceed, String[] parameterNames, Object[] args, HttpServletRequest request,HttpSession session) {
 
         try {
             ESLog esLog = new ESLog();
@@ -47,7 +50,7 @@ public class LogUtil {
             esLog.setIp(getIpAddr(request));
             esLog.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 
-            Object user = request.getSession().getAttribute("user");
+            Object user =  session.getAttribute("user");
             if (Assert.isBlank(user)) {
                 esLog.setUserName("-");
             }else{
@@ -101,7 +104,8 @@ public class LogUtil {
         for (i = 0; i < parameterNames.length; ++i) {
             if (!(args[i] instanceof ServletRequest) && !(args[i] instanceof ServletResponse) && !(args[i] instanceof BindingResult)) {
                 sb.append("\"").append(parameterNames[i]).append("\"").append(":");
-                if(args[i] instanceof Pageable || args[i] instanceof Model){
+                if(args[i] instanceof Pageable || args[i] instanceof Model || args[i] instanceof RedirectAttributes
+                        || args[i] instanceof HttpSession || args[i] instanceof Blog || args[i] instanceof Tag || args[i] instanceof Type || args[i] instanceof Comment){
                     sb.append("{}");
                 }else if (args[i] instanceof MultipartFile[]) {
                     MultipartFile[] multipartFiles = (MultipartFile[]) args[i];
