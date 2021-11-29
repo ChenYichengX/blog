@@ -1,13 +1,16 @@
 package com.chen.blog.web;
 
 import com.chen.blog.aspect.SystemLog;
+import com.chen.blog.entity.Blog;
 import com.chen.blog.service.BlogService;
 import com.chen.blog.service.TagService;
 import com.chen.blog.service.TypeService;
+import com.chen.blog.vo.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -23,8 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 陈奕成
@@ -53,21 +55,50 @@ public class IndexController {
     private static Map imageContentType = new HashMap<>();
 
     static {
-        imageContentType.put("jpg","image/jpeg");
-        imageContentType.put("jpeg","image/jpeg");
-        imageContentType.put("png","image/png");
-        imageContentType.put("tif","image/tiff");
-        imageContentType.put("tiff","image/tiff");
-        imageContentType.put("ico","image/x-icon");
-        imageContentType.put("bmp","image/bmp");
-        imageContentType.put("gif","image/gif");
+        imageContentType.put("jpg", "image/jpeg");
+        imageContentType.put("jpeg", "image/jpeg");
+        imageContentType.put("png", "image/png");
+        imageContentType.put("tif", "image/tiff");
+        imageContentType.put("tiff", "image/tiff");
+        imageContentType.put("ico", "image/x-icon");
+        imageContentType.put("bmp", "image/bmp");
+        imageContentType.put("gif", "image/gif");
     }
 
     @SystemLog(serviceName = "blog服务", module = "首页模块", action = "访问首页")
     @GetMapping("/")
     public String index(@PageableDefault(size = 4, sort = {"views"}, direction = Direction.DESC) Pageable pageable,
                         Model model) {
-        model.addAttribute("page", blogService.listBlog(pageable));
+        Page<Blog> blogs = blogService.listBlog(pageable);
+        model.addAttribute("page", blogs);
+        List<PageResult> page = new ArrayList<>();
+        if (blogs.getTotalPages() <= 4) {
+            for (int i = 0; i < blogs.getTotalPages(); i++) {
+                if (blogs.getNumber() == i) {
+                    page.add(new PageResult(i + 1, true));
+                } else {
+                    page.add(new PageResult(i + 1, false));
+                }
+            }
+        } else {
+            int number = blogs.getNumber();
+            if (number >= 2) {
+                page.add(new PageResult(number - 1, false));
+                page.add(new PageResult(number, false));
+                page.add(new PageResult(number + 1, true));
+                page.add(new PageResult(number + 2, false));
+                page.add(new PageResult(number + 3, false));
+            } else {
+                for (int i = 0; i <= 4; i++) {
+                    if (number == i) {
+                        page.add(new PageResult(i + 1, true));
+                    } else {
+                        page.add(new PageResult(i + 1, false));
+                    }
+                }
+            }
+        }
+        model.addAttribute("pageSize", page);
         model.addAttribute("types", typeService.listTypeTop(4));
         model.addAttribute("tags", tagService.listTagTop(7));
         model.addAttribute("recommendBlogs", blogService.listRecommendBlogTop(4));
@@ -116,13 +147,15 @@ public class IndexController {
         ServletOutputStream out = null;
         FileInputStream ips = null;
         String fileType = path.substring(path.lastIndexOf(".") + 1).toLowerCase();
-        String filesType = (String)imageContentType.get(fileType);
-        String parentPath = picturePath.substring(picturePath.indexOf(':') + 1); // 获取存放图片的目录路径
-        try{
-            File file = new File(parentPath,path);
-            if(!file.exists()){ // 文件不存在
+        String filesType = (String) imageContentType.get(fileType);
+        // 获取存放图片的目录路径
+        String parentPath = picturePath.substring(picturePath.indexOf(':') + 1);
+        try {
+            File file = new File(parentPath, path);
+            // 文件不存在
+            if (!file.exists()) {
                 logger.error("图片资源不存在");
-                return ;
+                return;
             }
             ips = new FileInputStream(file);
             response.setContentType(filesType);
@@ -130,21 +163,21 @@ public class IndexController {
             //读取文件流
             int len = 0;
             byte[] buffer = new byte[1024 * 10];
-            while ((len = ips.read(buffer)) != -1){
-                out.write(buffer,0,len);
+            while ((len = ips.read(buffer)) != -1) {
+                out.write(buffer, 0, len);
             }
             out.flush();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if(out != null){
+        } finally {
+            if (out != null) {
                 try {
                     out.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(ips != null){
+            if (ips != null) {
                 try {
                     ips.close();
                 } catch (IOException e) {

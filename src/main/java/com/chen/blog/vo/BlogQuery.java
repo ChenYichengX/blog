@@ -1,6 +1,5 @@
 package com.chen.blog.vo;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * @author 陈奕成
