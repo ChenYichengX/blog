@@ -92,11 +92,15 @@
 				<!-- 内容底部 -->
 				<div class="ui bottom attached segment"  th:if="${page.totalPages}>1">
 					<div class="ui middle aligned two column grid">
-						<div class="column">
-							<a href="#" th:href="@{/(page=${page.number}-1)}" th:unless="${page.first}" class="ui mini basic teal button">上一页</a>
-						</div>
+						<div class="column"></div>
 						<div class="right aligned column">
-							<a href="#" th:href="@{/(page=${page.number}+1)}" th:unless="${page.last}" class="ui mini basic teal button">下一页</a>
+							<div class="ui right floated pagination menu">
+								<a class="icon item" href="#" th:href="@{/types/{id}(id=${activeTypeId},page=0)}">首页</a>
+								<a class="item" th:each="pageItem : ${pageSize}" th:href="@{/types/{id}(id=${activeTypeId},page=${pageItem.PageNumber}-1)}" th:classappend="${pageItem.flag} ? 'active'">
+									<span th:text="${pageItem.PageNumber}">1</span>
+								</a>
+								<a class="icon item" href="#" th:href="@{/types/{id}(id=${activeTypeId},page=${page.totalPages}-1)}">尾页</a>
+							</div>
 						</div>
 					</div>
 				</div>
