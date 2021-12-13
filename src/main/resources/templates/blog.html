@@ -259,40 +259,23 @@ var _self = (typeof window !== 'undefined')
 					<div id="comment-form" class="ui form">
 						<input type="hidden" name="blog.id" th:value="${blog.id}">
 						<input type="hidden" name="parentComment.id" value="-1">
-
-						<div class="field">
-							<textarea name="content" placeholder="请输入评论内容..."></textarea>
-						</div>
 						<div class="fields">
-							<!--<div class="field m-mobile-wide m-margin-buttom-mini">
-								<select class="ui dropdown">
-									<option value="">头像</option>
-									<option value="1" style="display: block">
-										<img class="ui mini avatar image" src="../static/images/001.jpg">1
-									</option>
-									<option value="2">
-										<img class="ui mini avatar image" src="../static/images/002.jpg">2
-									</option>
-									<option value="3">
-										<img class="ui mini avatar image" src="../static/images/003.jpg">3
-									</option>
-									<option value="4">
-										<img class="ui mini avatar image" src="../static/images/004.jpg">4
-									</option>
-									<option value="5">
-										<img class="ui mini avatar image" src="../static/images/005.jpg">5
-									</option>
-									<option value="6">
-										<img class="ui mini avatar image" src="../static/images/006.jpg">6
-									</option>
-									<option value="7">
-										<img class="ui mini avatar image" src="../static/images/007.jpg">7
-									</option>
-									<option value="8">
-										<img class="ui mini avatar image" src="../static/images/008.jpg">8
-									</option>
-								</select>
-							</div>-->
+							<div class="field m-mobile-wide m-margin-buttom-mini">
+								<div class="ui fluid top pointing selection dropdown" id="avatarSelect">
+									<input type="hidden" name="avatar" value="001">
+									<i class="dropdown icon"></i>
+									<div class="text"><img class="ui avatar image" src="../static/images/001.jpg"></div>
+									<div class="menu">
+										<div class="item" data-value="001"><img class="ui avatar image" src="../static/images/001.jpg"></div>
+										<div class="item" data-value="002"><img class="ui avatar image" src="../static/images/002.jpg"></div>
+										<div class="item" data-value="003"><img class="ui avatar image" src="../static/images/003.jpg"></div>
+										<div class="item" data-value="004"><img class="ui avatar image" src="../static/images/004.jpg"></div>
+										<div class="item" data-value="005"><img class="ui avatar image" src="../static/images/005.jpg"></div>
+										<div class="item" data-value="007"><img class="ui avatar image" src="../static/images/007.jpg"></div>
+										<div class="item" data-value="008"><img class="ui avatar image" src="../static/images/008.jpg"></div>
+									</div>
+								</div>
+							</div>
 							<div class="field m-mobile-wide m-margin-buttom-mini">
 								<div class="ui left icon input">
 									<i class="user icon"></i>
@@ -308,6 +291,9 @@ var _self = (typeof window !== 'undefined')
 							<div class="field m-mobile-wide m-margin-buttom-mini">
 								<button id="commentPost-btn" type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>发布</button>
 							</div>
+						</div>
+						<div class="field">
+							<textarea name="content" placeholder="请输入评论内容..."></textarea>
 						</div>
 						<div class="ui error message"></div>
 					</div>
@@ -377,6 +363,11 @@ var _self = (typeof window !== 'undefined')
 		</th:block>
 
 		<script th:inline="javascript">
+
+			$('.ui.dropdown').dropdown({
+				on : 'hover'
+			});
+
 			$('.menu.toggle').click(function(){
 				$('.m-item').toggleClass('m-mobile-hide');
 			});
@@ -483,7 +474,8 @@ var _self = (typeof window !== 'undefined')
 					"blog.id" : $("[name='blog.id']").val(),
 					"nickName" : $("[name='nickName']").val(),
 					"email" : $("[name='email']").val(),
-					"content" : $("[name='content']").val()
+					"content" : $("[name='content']").val(),
+					"avatar": $("[name='avatar']").val()
 				},function (responseTxt,statusTxt,xhr) {
 					//滚动到留言列表区域
 					$(window).scrollTo($('#comment-container'),500);

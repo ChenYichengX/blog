@@ -47,7 +47,7 @@ public class CommentController {
             comment.setAvatar(user.getAvatar());
             comment.setAdminComment(true);
         }else{
-            comment.setAvatar(avatar);
+            comment.setAvatar("/static/images/"+ comment.getAvatar() +".jpg");
         }
 
         commentService.saveComment(comment);
