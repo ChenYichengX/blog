@@ -3,6 +3,7 @@ package com.chen.blog.util;
 import com.alibaba.fastjson.JSONObject;
 import com.chen.blog.aspect.entity.ESLog;
 import com.chen.blog.dao.ESLogRepository;
+import com.chen.blog.dao.EslogDaoRepository;
 import com.chen.blog.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,14 +35,17 @@ public class LogUtil {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+//    @Autowired
+//    private ESLogRepository esLogRepository;
     @Autowired
-    private ESLogRepository esLogRepository;
+    private EslogDaoRepository eslogDaoRepository;
 
     @Async
     public void insertEsLog(String serviceName, String module, String action, Object proceed, String[] parameterNames, Object[] args, HttpServletRequest request,HttpSession session) {
 
         try {
-            ESLog esLog = new ESLog();
+//            ESLog esLog = new ESLog();
+            EsLog esLog = new EsLog();
             esLog.setServerName(serviceName);
             esLog.setModule(module);
             esLog.setAction(action);
@@ -84,8 +88,8 @@ public class LogUtil {
             esLog.setResultCode(""/*resultCode*/);
 
             // 调用 esUtil 插入进 elasticsearch
-            esLogRepository.save(esLog);
-
+            // esLogRepository.save(esLog);
+            eslogDaoRepository.save(esLog);
 
             log.info("日志记录完成:" + esLog);
         } catch (Exception var19) {
