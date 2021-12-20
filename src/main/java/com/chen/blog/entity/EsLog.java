@@ -17,7 +17,6 @@ import java.util.Date;
 public class EsLog {
 
     @Id
-    @GeneratedValue
     private String id;
 
     /** 服务名-ChenYicheng-2021/10/29 11:46 */
