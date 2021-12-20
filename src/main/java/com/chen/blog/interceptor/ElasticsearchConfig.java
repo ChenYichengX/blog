@@ -21,7 +21,7 @@ import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfig
  * @Description es 配置
  * @Date 2021/11/1 15:11
  */
-@Configuration
+//@Configuration
 public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
 
     @Value("${elasticsearch.host}")
