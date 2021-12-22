@@ -45,22 +45,37 @@ public class TagShowController {
         Page<Blog> blogs = blogService.listBlog(id, pageable);
         model.addAttribute("page",blogs);
         List<PageResult> page = new ArrayList<>();
-        if (blogs.getTotalPages() <= 4) {
-            for (int i = 0; i < blogs.getTotalPages(); i++) {
+        int totalPages = blogs.getTotalPages();
+        int number = blogs.getNumber();
+        if (totalPages <= 4) {
+            for (int i = 0; i < totalPages; i++) {
                 if (blogs.getNumber() == i) {
                     page.add(new PageResult(i + 1, true));
                 } else {
                     page.add(new PageResult(i + 1, false));
                 }
             }
+        } else if(number + 1 >= totalPages){
+            page.add(new PageResult(number - 3, false));
+            page.add(new PageResult(number - 2, false));
+            page.add(new PageResult(number - 1, false));
+            page.add(new PageResult(number, false));
+            page.add(new PageResult(number + 1, true));
         } else {
-            int number = blogs.getNumber();
-            if (number >= 2) {
+            if (number >= 2 && number + 3 < totalPages) {
                 page.add(new PageResult(number - 1, false));
                 page.add(new PageResult(number, false));
                 page.add(new PageResult(number + 1, true));
                 page.add(new PageResult(number + 2, false));
                 page.add(new PageResult(number + 3, false));
+            } else if (number >= 2 && number + 3 >= totalPages){
+                for (int i = 1; i <= totalPages; i++){
+                    if(i == number + 1){
+                        page.add(new PageResult(i, true));
+                    }else{
+                        page.add(new PageResult(i, false));
+                    }
+                }
             } else {
                 for (int i = 0; i <= 4; i++) {
                     if (number == i) {
