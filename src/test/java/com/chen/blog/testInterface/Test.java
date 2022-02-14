@@ -7,4 +7,12 @@ package com.chen.blog.testInterface;
  * @Date 2022/1/14 10:35
  */
 public class Test {
+
+    @org.junit.Test
+    public void test1(){
+        TestInterface t1 = new TestClass();
+
+        int sum = t1.sum(1, 2);
+        System.out.println(sum);
+    }
 }

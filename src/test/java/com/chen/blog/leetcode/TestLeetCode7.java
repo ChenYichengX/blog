@@ -1,4 +1,4 @@
-package com.chen.blog;
+package com.chen.blog.leetcode;
 
 import org.junit.Test;
 
