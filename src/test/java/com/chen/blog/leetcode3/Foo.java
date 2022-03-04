@@ -67,3 +67,40 @@ public class Foo {
         }
     }
 }
+
+class TestFooMain{
+    public static void main(String[] args) {
+
+        Foo foo = new Foo();
+
+        new Thread(() -> {
+            for (int i = 0; i < 5 ; i++) {
+                try {
+                    foo.first(() -> System.out.println("first"));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        },"A").start();
+
+        new Thread(() -> {
+            for (int i = 0; i < 5 ; i++) {
+                try {
+                    foo.second(() -> System.out.println("second"));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        },"B").start();
+
+        new Thread(() -> {
+            for (int i = 0; i < 5 ; i++) {
+                try {
+                    foo.third(() -> System.out.println("third"));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        },"C").start();
+    }
+}
