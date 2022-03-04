@@ -52,13 +52,17 @@ public class LeetCode1143 {
      * @Date 2022/3/4 10:27
      */
     public long subArrayRanges(int[] nums) {
-        long max = 0L;
+        long result = 0L;
         for (int i = 0; i < nums.length; i++) {
-            for (int j = 1; j < nums.length; j++) {
-                max += Math.abs(nums[i] - nums[j]);
+            int maxVal = Integer.MIN_VALUE;
+            int minVal = Integer.MAX_VALUE;
+            for (int j = i; j < nums.length; j++) {
+                minVal = Math.min(minVal, nums[j]);
+                maxVal = Math.max(maxVal, nums[j]);
+                result += maxVal - minVal;
             }
         }
-        return max;
+        return result;
     }
 
     /**
