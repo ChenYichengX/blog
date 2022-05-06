@@ -2,6 +2,8 @@ package com.chen.blog.leetcode6;
 
 import org.junit.Test;
 
+import java.util.Scanner;
+
 /**
  * @ClassName LeetCode1143
  * @Author ChenYicheng
@@ -75,6 +77,15 @@ public class LeetCode1143 {
         int[] nums = {1, 2, 3};
         long l = subArrayRanges(nums);
         System.out.println(l);
+    }
+
+
+    @Test
+    public void test3(){
+        String str = "hello world";
+        StringBuilder sb = new StringBuilder(str);
+        str = sb.reverse().toString();
+        System.out.println();
     }
 
 

@@ -1,6 +1,7 @@
 package com.chen.blog;
 
 import org.hibernate.type.descriptor.sql.SmallIntTypeDescriptor;
+import org.junit.jupiter.api.Test;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -43,4 +44,19 @@ public class TestMd5Code {
         String code = code("123456");
         System.out.println(code);
     }
+
+    /**
+     * 测试100-10000偶数和
+     */
+    @Test
+    public void test1(){
+        int a = 100;
+        int sum = 0;
+        while (a<=10000){
+            sum += a;
+            a+=2;
+        }
+        System.out.println(sum);
+    }
+
 }
